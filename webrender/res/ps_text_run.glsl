@@ -1,3 +1,233 @@
+//
+//
+// Hello, future bug hunter!
+// I hope you have come to reduce this testcase further.
+//
+// Keep scrolling down until you find "HERE IS THE BUG".
+//
+//
+//
+
+
+#if defined(WR_VERTEX_SHADER) && defined(WR_FEATURE_ALPHA_PASS) && \
+    defined(WR_FEATURE_TEXTURE_2D) && \
+    !defined(WR_FEATURE_DEBUG) && \
+    !defined(WR_FEATURE_GLYPH_TRANSFORM) && \
+    !defined(WR_FEATURE_DUAL_SOURCE_BLENDING) && \
+    !defined(SWGL)
+
+precision highp int;
+
+// ps_text_run
+// features: ["ALPHA_PASS", "TEXTURE_2D"]
+
+struct RectWithSize {
+  vec2 p0;
+  vec2 size;
+};
+uniform int uMode;
+uniform mat4 uTransform;
+in vec2 aPosition;
+uniform sampler2D sColor0;
+uniform sampler2D sRenderTasks;
+uniform sampler2D sGpuCache;
+uniform sampler2D sTransformPalette;
+flat out vec4 vClipMaskUvBounds;
+out vec4 vClipMaskUv;
+uniform sampler2D sPrimitiveHeadersF;
+uniform isampler2D sPrimitiveHeadersI;
+in ivec4 aData;
+flat out vec4 v_color;
+flat out vec2 v_mask_swizzle;
+flat out vec4 v_uv_bounds;
+out vec2 v_uv;
+
+void main ()
+{
+  vec2 glyph_offset_1;
+  int color_mode_2;
+  float ph_z_3;
+  ivec4 ph_user_data_4;
+  int instance_picture_task_address_5;
+  int instance_clip_address_6;
+  int instance_segment_index_7;
+  int instance_flags_8;
+  int instance_resource_address_9;
+  instance_picture_task_address_5 = (aData.y >> 16);
+  instance_clip_address_6 = (aData.y & 65535);
+  instance_segment_index_7 = (aData.z & 65535);
+  instance_flags_8 = (aData.z >> 16);
+  instance_resource_address_9 = (aData.w & 16777215);
+  ivec2 tmpvar_10;
+  tmpvar_10.x = int((2u * (
+    uint(aData.x)
+   % 512u)));
+  tmpvar_10.y = int((uint(aData.x) / 512u));
+  vec4 tmpvar_11;
+  tmpvar_11 = texelFetchOffset (sPrimitiveHeadersF, tmpvar_10, 0, ivec2(0, 0));
+  vec4 tmpvar_12;
+  tmpvar_12 = texelFetchOffset (sPrimitiveHeadersF, tmpvar_10, 0, ivec2(1, 0));
+  ivec2 tmpvar_13;
+  tmpvar_13.x = int((2u * (
+    uint(aData.x)
+   % 512u)));
+  tmpvar_13.y = int((uint(aData.x) / 512u));
+  ivec4 tmpvar_14;
+  tmpvar_14 = texelFetchOffset (sPrimitiveHeadersI, tmpvar_13, 0, ivec2(0, 0));
+  ph_z_3 = float(tmpvar_14.x);
+  ph_user_data_4 = texelFetchOffset (sPrimitiveHeadersI, tmpvar_13, 0, ivec2(1, 0));
+  mat4 transform_m_15;
+  int tmpvar_16;
+  tmpvar_16 = (tmpvar_14.z & 16777215);
+  ivec2 tmpvar_17;
+  tmpvar_17.x = int((8u * (
+    uint(tmpvar_16)
+   % 128u)));
+  tmpvar_17.y = int((uint(tmpvar_16) / 128u));
+  transform_m_15[0] = texelFetchOffset (sTransformPalette, tmpvar_17, 0, ivec2(0, 0));
+  transform_m_15[1] = texelFetchOffset (sTransformPalette, tmpvar_17, 0, ivec2(1, 0));
+  transform_m_15[2] = texelFetchOffset (sTransformPalette, tmpvar_17, 0, ivec2(2, 0));
+  transform_m_15[3] = texelFetchOffset (sTransformPalette, tmpvar_17, 0, ivec2(3, 0));
+  RectWithSize area_common_data_task_rect_18;
+  float area_common_data_texture_layer_index_19;
+  float area_device_pixel_scale_20;
+  vec2 area_screen_origin_21;
+  if ((instance_clip_address_6 >= 32767)) {
+    area_common_data_task_rect_18 = RectWithSize(vec2(0.0, 0.0), vec2(0.0, 0.0));
+    area_common_data_texture_layer_index_19 = 0.0;
+    area_device_pixel_scale_20 = 0.0;
+    area_screen_origin_21 = vec2(0.0, 0.0);
+  } else {
+    ivec2 tmpvar_22;
+    tmpvar_22.x = int((2u * (
+      uint(instance_clip_address_6)
+     % 512u)));
+    tmpvar_22.y = int((uint(instance_clip_address_6) / 512u));
+    vec4 tmpvar_23;
+    tmpvar_23 = texelFetchOffset (sRenderTasks, tmpvar_22, 0, ivec2(0, 0));
+    vec4 tmpvar_24;
+    tmpvar_24 = texelFetchOffset (sRenderTasks, tmpvar_22, 0, ivec2(1, 0));
+    vec3 tmpvar_25;
+    tmpvar_25 = tmpvar_24.yzw;
+    area_common_data_task_rect_18.p0 = tmpvar_23.xy;
+    area_common_data_task_rect_18.size = tmpvar_23.zw;
+    area_common_data_texture_layer_index_19 = tmpvar_24.x;
+    area_device_pixel_scale_20 = tmpvar_25.x;
+    area_screen_origin_21 = tmpvar_25.yz;
+  };
+  ivec2 tmpvar_26;
+  tmpvar_26.x = int((2u * (
+    uint(instance_picture_task_address_5)
+   % 512u)));
+  tmpvar_26.y = int((uint(instance_picture_task_address_5) / 512u));
+  vec4 tmpvar_27;
+  tmpvar_27 = texelFetchOffset (sRenderTasks, tmpvar_26, 0, ivec2(0, 0));
+  vec4 tmpvar_28;
+  tmpvar_28 = texelFetchOffset (sRenderTasks, tmpvar_26, 0, ivec2(1, 0));
+  int tmpvar_29;
+  tmpvar_29 = ((instance_flags_8 >> 8) & 255);
+  int tmpvar_30;
+  tmpvar_30 = (instance_flags_8 & 255);
+  color_mode_2 = tmpvar_30;
+  ivec2 tmpvar_31;
+  tmpvar_31.x = int((uint(tmpvar_14.y) % 1024u));
+  tmpvar_31.y = int((uint(tmpvar_14.y) / 1024u));
+  vec4 tmpvar_32;
+  vec4 tmpvar_33;
+  tmpvar_32 = texelFetchOffset (sGpuCache, tmpvar_31, 0, ivec2(0, 0));
+  tmpvar_33 = texelFetchOffset (sGpuCache, tmpvar_31, 0, ivec2(1, 0));
+  if ((tmpvar_30 == 0)) {
+    color_mode_2 = uMode;
+  };
+  int tmpvar_34;
+  tmpvar_34 = ((tmpvar_14.y + 2) + int((
+    uint(instance_segment_index_7)
+   / 2u)));
+  ivec2 tmpvar_35;
+  tmpvar_35.x = int((uint(tmpvar_34) % 1024u));
+  tmpvar_35.y = int((uint(tmpvar_34) / 1024u));
+  vec4 tmpvar_36;
+  tmpvar_36 = texelFetch (sGpuCache, tmpvar_35, 0);
+  glyph_offset_1 = (mix(tmpvar_36.xy, tmpvar_36.zw, bvec2((
+    (uint(instance_segment_index_7) % 2u)
+   != uint(0)))) + tmpvar_11.xy);
+  ivec2 tmpvar_37;
+  tmpvar_37.x = int((uint(instance_resource_address_9) % 1024u));
+  tmpvar_37.y = int((uint(instance_resource_address_9) / 1024u));
+  vec4 tmpvar_38;
+  vec4 tmpvar_39;
+  tmpvar_38 = texelFetchOffset (sGpuCache, tmpvar_37, 0, ivec2(0, 0));
+  tmpvar_39 = texelFetchOffset (sGpuCache, tmpvar_37, 0, ivec2(1, 0));
+  vec2 tmpvar_40 = vec2(0.125, 0.5);
+  float tmpvar_41;
+  tmpvar_41 = ((float(ph_user_data_4.x) / 65535.0) * tmpvar_28.y);
+  float tmpvar_42;
+  tmpvar_42 = (tmpvar_39.w / tmpvar_41);
+  vec2 tmpvar_43;
+  vec2 tmpvar_44;
+  tmpvar_43 = ((tmpvar_42 * (tmpvar_39.yz +
+    (floor(((glyph_offset_1 * tmpvar_41) + tmpvar_40)) / tmpvar_39.w)
+  )) + tmpvar_11.zw);
+  tmpvar_44 = (tmpvar_42 * (tmpvar_38.zw - tmpvar_38.xy));
+  vec2 tmpvar_45;
+  tmpvar_45 = min (max ((tmpvar_43 +
+    (tmpvar_44 * aPosition)
+  ), tmpvar_12.xy), (tmpvar_12.xy + tmpvar_12.zw));
+  vec4 tmpvar_46;
+  tmpvar_46.zw = vec2(0.0, 1.0);
+  tmpvar_46.xy = tmpvar_45;
+  vec4 tmpvar_47;
+  tmpvar_47 = (transform_m_15 * tmpvar_46);
+  vec4 tmpvar_48;
+  tmpvar_48.xy = ((tmpvar_47.xy * tmpvar_28.y) + ((
+    -(tmpvar_28.zw)
+   + tmpvar_27.xy) * tmpvar_47.w));
+  tmpvar_48.z = (ph_z_3 * tmpvar_47.w);
+  tmpvar_48.w = tmpvar_47.w;
+  gl_Position = (uTransform * tmpvar_48);
+  vec2 tmpvar_49;
+  tmpvar_49 = ((tmpvar_45 - tmpvar_43) / tmpvar_44);
+  vec4 tmpvar_50;
+  tmpvar_50.xy = area_common_data_task_rect_18.p0;
+  tmpvar_50.zw = (area_common_data_task_rect_18.p0 + area_common_data_task_rect_18.size);
+  vClipMaskUvBounds = tmpvar_50;
+  vec4 tmpvar_51;
+  tmpvar_51.xy = ((tmpvar_47.xy * area_device_pixel_scale_20) + (tmpvar_47.w * (area_common_data_task_rect_18.p0 - area_screen_origin_21)));
+  tmpvar_51.z = area_common_data_texture_layer_index_19;
+  tmpvar_51.w = tmpvar_47.w;
+  vClipMaskUv = tmpvar_51;
+  v_mask_swizzle = vec2(0.0, 1.0);
+
+  //
+  //
+  // HERE IS THE BUG
+  //
+  // color_mode_2 is 1, but the first if branch is not entered.
+  // The second if branch is entered!
+  //
+  // Blue text: things work correctly
+  // Black text: the bug appears
+  // Purple text: unexpected
+  //
+  if (color_mode_2 == 1) {
+    v_color = vec4(0.0, 0.0, 1.0, 1.0); // blue
+  } else if (color_mode_2 + 3 == 4) {
+    v_color = vec4(0.0, 0.0, 0.0, 1.0); // black
+  } else {
+    v_color = vec4(1.0, 0.0, 1.0, 1.0); // purple
+  };
+
+  // Ignore the rest
+
+  vec2 tmpvar_52;
+  tmpvar_52 = vec2(textureSize (sColor0, 0));
+  v_uv = mix ((tmpvar_38.xy / tmpvar_52), (tmpvar_38.zw / tmpvar_52), tmpvar_49);
+  v_uv_bounds = ((tmpvar_38 + vec4(0.5, 0.5, -0.5, -0.5)) / tmpvar_52.xyxy);
+}
+
+
+
+#else
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -300,3 +530,5 @@ void main() {
 }
 
 #endif // WR_FRAGMENT_SHADER
+
+#endif
