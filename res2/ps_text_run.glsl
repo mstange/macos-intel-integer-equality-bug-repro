@@ -98,9 +98,7 @@ void main ()
   tmpvar_27 = texelFetchOffset (sRenderTasks, tmpvar_26, 0, ivec2(0, 0));
   vec4 tmpvar_28;
   tmpvar_28 = texelFetchOffset (sRenderTasks, tmpvar_26, 0, ivec2(1, 0));
-  int tmpvar_30;
-  tmpvar_30 = (instance_flags_8 & 255);
-  color_mode_2 = tmpvar_30;
+  color_mode_2  = (instance_flags_8 & 255);
   ivec2 tmpvar_31;
   tmpvar_31.x = int((uint(tmpvar_14.y) % 1024u));
   tmpvar_31.y = int((uint(tmpvar_14.y) / 1024u));
@@ -108,9 +106,6 @@ void main ()
   vec4 tmpvar_33;
   tmpvar_32 = texelFetchOffset (sGpuCache, tmpvar_31, 0, ivec2(0, 0));
   tmpvar_33 = texelFetchOffset (sGpuCache, tmpvar_31, 0, ivec2(1, 0));
-  if ((tmpvar_30 == 0)) {
-    color_mode_2 = uMode;
-  };
   int tmpvar_34;
   tmpvar_34 = ((tmpvar_14.y + 2) + int((
     uint(instance_segment_index_7)
