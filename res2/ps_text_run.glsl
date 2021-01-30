@@ -87,12 +87,10 @@ void main ()
   float tmpvar_41 = 2;
   vec2 tmpvar_43;
   vec2 tmpvar_44;
-  tmpvar_43 = (1 / tmpvar_41 * ( glyph_offset_1 * tmpvar_41 ));
-  tmpvar_44 = ((1 / tmpvar_41)* (tmpvar_38.zw - tmpvar_38.xy));
+  tmpvar_43 = (1 / 2. * ( glyph_offset_1 * tmpvar_41 ));
+  tmpvar_44 = ((1 / 2.)* (tmpvar_38.zw - tmpvar_38.xy));
   vec2 tmpvar_45;
-  tmpvar_45 = (tmpvar_43 +
-    (tmpvar_44 * aPosition)
-  );
+  tmpvar_45 = (tmpvar_43 + (tmpvar_44 * aPosition));
   
   vec4 tmpvar_48;
   tmpvar_48.xy = ((tmpvar_45.xy * 2));
