@@ -44,12 +44,10 @@ void main ()
   float ph_z_3;
   ivec4 ph_user_data_4;
   int instance_picture_task_address_5;
-  int instance_clip_address_6;
   int instance_segment_index_7;
   int instance_flags_8;
   int instance_resource_address_9;
   instance_picture_task_address_5 = (aData.y >> 16);
-  instance_clip_address_6 = (aData.y & 65535);
   instance_segment_index_7 = (aData.z & 65535);
   instance_flags_8 = (aData.z >> 16);
   instance_resource_address_9 = (aData.w & 16777215);
