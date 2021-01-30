@@ -136,7 +136,7 @@ void main ()
   vec4 tmpvar_47;
   tmpvar_47 = (transform_m_15 * tmpvar_46);
   vec4 tmpvar_48;
-  tmpvar_48.xy = ((tmpvar_47.xy * tmpvar_28.y));
+  tmpvar_48.xy = ((tmpvar_47.xy * 2));
   tmpvar_48.z = (ph_z_3 * tmpvar_47.w);
   tmpvar_48.w = tmpvar_47.w;
   gl_Position = (uTransform * tmpvar_48);
