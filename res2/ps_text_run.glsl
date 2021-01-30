@@ -81,21 +81,11 @@ void main ()
   transform_m_15[1] = texelFetchOffset (sTransformPalette, tmpvar_17, 0, ivec2(1, 0));
   transform_m_15[2] = texelFetchOffset (sTransformPalette, tmpvar_17, 0, ivec2(2, 0));
   transform_m_15[3] = texelFetchOffset (sTransformPalette, tmpvar_17, 0, ivec2(3, 0));
-  RectWithSize area_common_data_task_rect_18;
-  float area_common_data_texture_layer_index_19;
-  float area_device_pixel_scale_20;
-  vec2 area_screen_origin_21;
-    area_common_data_task_rect_18 = RectWithSize(vec2(0.0, 0.0), vec2(0.0, 0.0));
-    area_common_data_texture_layer_index_19 = 0.0;
-    area_device_pixel_scale_20 = 0.0;
-    area_screen_origin_21 = vec2(0.0, 0.0);
   ivec2 tmpvar_26;
   tmpvar_26.x = int((2u * (
     uint(instance_picture_task_address_5)
    % 512u)));
   tmpvar_26.y = int((uint(instance_picture_task_address_5) / 512u));
-  vec4 tmpvar_27;
-  tmpvar_27 = texelFetchOffset (sRenderTasks, tmpvar_26, 0, ivec2(0, 0));
   vec4 tmpvar_28;
   tmpvar_28 = texelFetchOffset (sRenderTasks, tmpvar_26, 0, ivec2(1, 0));
   color_mode_2  = (instance_flags_8 & 255);
