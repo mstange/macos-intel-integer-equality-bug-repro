@@ -35,19 +35,11 @@ flat out vec4 v_color;
 
 void main ()
 {
-  vec2 glyph_offset_1;
   int color_mode_2;
   int instance_flags_8;
-  int instance_resource_address_9;
   instance_flags_8 = (aData.z >> 16);
   color_mode_2  = (instance_flags_8 & 255);
-  instance_resource_address_9 = (aData.w & 16777215);
 
-  ivec2 tmpvar_10;
-  tmpvar_10.x = int((2u * (uint(aData.x) % 512u)));
-  tmpvar_10.y = int((uint(aData.x) / 512u));
-  vec4 tmpvar_11 = texelFetchOffset (sPrimitiveHeadersF, tmpvar_10, 0, ivec2(0, 0));
-  
   // even though transform_m_15[2] is not read it's important for this test
   mat4 transform_m_15;
   transform_m_15[2] = texelFetchOffset (sTransformPalette, ivec2(0, 0), 0, ivec2(2, 0));
@@ -57,15 +49,9 @@ void main ()
   tmpvar_33 = texelFetchOffset (sGpuCache, ivec2(0, 0), 0, ivec2(1, 0));
   
 
-  glyph_offset_1 = vec2(30, 40);
-
-  vec2 tmpvar_45 = (glyph_offset_1 + (vec2(40, 50) * aPosition));
+  vec2 tmpvar_45 = (vec2(60, 80) + (vec2(80, 100) * aPosition));
   
-  vec4 tmpvar_48;
-  tmpvar_48.xy = ((tmpvar_45.xy * 2));
-  tmpvar_48.z = 0;
-  tmpvar_48.w = 1;
-  gl_Position = (uTransform * tmpvar_48);
+  gl_Position = (uTransform * vec4(tmpvar_45, 0, 1));
 
   //
   //
