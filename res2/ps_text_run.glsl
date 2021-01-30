@@ -51,22 +51,18 @@ void main ()
   // even though transform_m_15[2] is not read it's important for this test
   mat4 transform_m_15;
   transform_m_15[2] = texelFetchOffset (sTransformPalette, ivec2(0, 0), 0, ivec2(2, 0));
-  
-  vec4 tmpvar_32;
+ 
+  // this variable is important too
   vec4 tmpvar_33;
-  tmpvar_32 = texelFetchOffset (sGpuCache, ivec2(0, 0), 0, ivec2(0, 0));
   tmpvar_33 = texelFetchOffset (sGpuCache, ivec2(0, 0), 0, ivec2(1, 0));
+  
+
   vec4 tmpvar_36 = texelFetch (sGpuCache, ivec2(2, 0), 0);
   glyph_offset_1 = (tmpvar_36.zw + tmpvar_11.xy);
   
 
-  ivec2 tmpvar_37;
-  tmpvar_37.x = int((uint(instance_resource_address_9) % 1024u));
-  tmpvar_37.y = int((uint(instance_resource_address_9) / 1024u));
   
-  vec4 tmpvar_38 = texelFetchOffset (sGpuCache, tmpvar_37, 0, ivec2(0, 0));
-  vec2 tmpvar_44 = ((1 / 2.)* (tmpvar_38.zw - tmpvar_38.xy));
-  tmpvar_44 = vec2(40, 50);
+  vec2 tmpvar_44 = vec2(40, 50);
   vec2 tmpvar_45 = (glyph_offset_1 + (tmpvar_44 * aPosition));
   
   vec4 tmpvar_48;
