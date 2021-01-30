@@ -109,16 +109,13 @@ void main ()
   tmpvar_38 = texelFetchOffset (sGpuCache, tmpvar_37, 0, ivec2(0, 0));
   tmpvar_39 = texelFetchOffset (sGpuCache, tmpvar_37, 0, ivec2(1, 0));
   vec2 tmpvar_40 = vec2(0.125, 0.5);
-  float tmpvar_41;
-  tmpvar_41 = ((float(ph_user_data_4.x) / 65535.0) * 2);
-  float tmpvar_42;
-  tmpvar_42 = (tmpvar_39.w / tmpvar_41);
+  float tmpvar_41 = 2;
   vec2 tmpvar_43;
   vec2 tmpvar_44;
-  tmpvar_43 = ((tmpvar_42 * (tmpvar_39.yz +
-    (floor(((glyph_offset_1 * tmpvar_41))) / tmpvar_39.w)
+  tmpvar_43 = ((1 / tmpvar_41 * (tmpvar_39.yz +
+    (floor(((glyph_offset_1 * tmpvar_41))) )
   )) + tmpvar_11.zw);
-  tmpvar_44 = (tmpvar_42 * (tmpvar_38.zw - tmpvar_38.xy));
+  tmpvar_44 = ((1 / tmpvar_41)* (tmpvar_38.zw - tmpvar_38.xy));
   vec2 tmpvar_45;
   tmpvar_45 = min (max ((tmpvar_43 +
     (tmpvar_44 * aPosition)
