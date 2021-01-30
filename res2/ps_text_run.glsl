@@ -50,6 +50,7 @@ void main ()
   instance_picture_task_address_5 = (aData.y >> 16);
   instance_segment_index_7 = (aData.z & 65535);
   instance_flags_8 = (aData.z >> 16);
+  color_mode_2  = (instance_flags_8 & 255);
   instance_resource_address_9 = (aData.w & 16777215);
   ivec2 tmpvar_10;
   tmpvar_10.x = int((2u * (
@@ -88,7 +89,6 @@ void main ()
   tmpvar_26.y = int((uint(instance_picture_task_address_5) / 512u));
   vec4 tmpvar_28;
   tmpvar_28 = texelFetchOffset (sRenderTasks, tmpvar_26, 0, ivec2(1, 0));
-  color_mode_2  = (instance_flags_8 & 255);
   ivec2 tmpvar_31;
   tmpvar_31.x = int((uint(tmpvar_14.y) % 1024u));
   tmpvar_31.y = int((uint(tmpvar_14.y) / 1024u));
