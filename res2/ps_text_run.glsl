@@ -98,8 +98,6 @@ void main ()
   tmpvar_27 = texelFetchOffset (sRenderTasks, tmpvar_26, 0, ivec2(0, 0));
   vec4 tmpvar_28;
   tmpvar_28 = texelFetchOffset (sRenderTasks, tmpvar_26, 0, ivec2(1, 0));
-  int tmpvar_29;
-  tmpvar_29 = ((instance_flags_8 >> 8) & 255);
   int tmpvar_30;
   tmpvar_30 = (instance_flags_8 & 255);
   color_mode_2 = tmpvar_30;
