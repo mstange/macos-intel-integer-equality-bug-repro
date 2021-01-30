@@ -62,27 +62,23 @@ void main ()
     uint(aData.x)
    % 512u)));
   tmpvar_13.y = int((uint(aData.x) / 512u));
-  ivec4 tmpvar_14;
-  tmpvar_14 = texelFetchOffset (sPrimitiveHeadersI, tmpvar_13, 0, ivec2(0, 0));
   mat4 transform_m_15;
   ivec2 tmpvar_17;
-  tmpvar_17.x = int((8u * (
-    uint(0)
-   % 128u)));
-  tmpvar_17.y = int((uint(0) / 128u));
-  transform_m_15[0] = texelFetchOffset (sTransformPalette, tmpvar_17, 0, ivec2(0, 0));
-  transform_m_15[1] = texelFetchOffset (sTransformPalette, tmpvar_17, 0, ivec2(1, 0));
+  tmpvar_17.x = 0;
+  tmpvar_17.y = 0;
+  
+  // even though transform_m_15[2] is not read it's important for this test
   transform_m_15[2] = texelFetchOffset (sTransformPalette, tmpvar_17, 0, ivec2(2, 0));
-  transform_m_15[3] = texelFetchOffset (sTransformPalette, tmpvar_17, 0, ivec2(3, 0));
+  
   ivec2 tmpvar_31;
-  tmpvar_31.x = int((uint(tmpvar_14.y) % 1024u));
-  tmpvar_31.y = int((uint(tmpvar_14.y) / 1024u));
+  tmpvar_31.x = int((uint(0) % 1024u));
+  tmpvar_31.y = int((uint(0) / 1024u));
   vec4 tmpvar_32;
   vec4 tmpvar_33;
   tmpvar_32 = texelFetchOffset (sGpuCache, tmpvar_31, 0, ivec2(0, 0));
   tmpvar_33 = texelFetchOffset (sGpuCache, tmpvar_31, 0, ivec2(1, 0));
   int tmpvar_34;
-  tmpvar_34 = ((tmpvar_14.y + 2) + int((
+  tmpvar_34 = ((0 + 2) + int((
     uint(instance_segment_index_7)
    / 2u)));
   ivec2 tmpvar_35;
@@ -114,7 +110,7 @@ void main ()
   tmpvar_46.zw = vec2(0.0, 1.0);
   tmpvar_46.xy = tmpvar_45;
   vec4 tmpvar_47;
-  tmpvar_47 = (transform_m_15 * tmpvar_46);
+  tmpvar_47 = (tmpvar_46);
   vec4 tmpvar_48;
   tmpvar_48.xy = ((tmpvar_47.xy * 2));
   tmpvar_48.z = (1 * tmpvar_47.w);
