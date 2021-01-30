@@ -65,14 +65,11 @@ void main ()
   ivec4 tmpvar_14;
   tmpvar_14 = texelFetchOffset (sPrimitiveHeadersI, tmpvar_13, 0, ivec2(0, 0));
   mat4 transform_m_15;
-  int tmpvar_16;
-  tmpvar_16 = (tmpvar_14.z & 16777215);
-  tmpvar_16 = 0;
   ivec2 tmpvar_17;
   tmpvar_17.x = int((8u * (
-    uint(tmpvar_16)
+    uint(0)
    % 128u)));
-  tmpvar_17.y = int((uint(tmpvar_16) / 128u));
+  tmpvar_17.y = int((uint(0) / 128u));
   transform_m_15[0] = texelFetchOffset (sTransformPalette, tmpvar_17, 0, ivec2(0, 0));
   transform_m_15[1] = texelFetchOffset (sTransformPalette, tmpvar_17, 0, ivec2(1, 0));
   transform_m_15[2] = texelFetchOffset (sTransformPalette, tmpvar_17, 0, ivec2(2, 0));
