@@ -58,8 +58,6 @@ void main ()
   tmpvar_10.y = int((uint(aData.x) / 512u));
   vec4 tmpvar_11;
   tmpvar_11 = texelFetchOffset (sPrimitiveHeadersF, tmpvar_10, 0, ivec2(0, 0));
-  vec4 tmpvar_12;
-  tmpvar_12 = texelFetchOffset (sPrimitiveHeadersF, tmpvar_10, 0, ivec2(1, 0));
   ivec2 tmpvar_13;
   tmpvar_13.x = int((2u * (
     uint(aData.x)
