@@ -5,7 +5,7 @@ It is not a reduced testcase.
 Run with the following command:
 
 ```
-cargo run --bin wrench -- show wrench/reftests/text/text.yaml
+cargo run --bin wrench -- --use-unoptimized-shaders --shaders=res2 show wrench/reftests/text/text.yaml
 ```
 
 Blue text means no driver bug.
