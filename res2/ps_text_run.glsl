@@ -32,31 +32,24 @@ uniform sampler2D sColor0;
 uniform sampler2D sRenderTasks;
 uniform sampler2D sGpuCache;
 uniform sampler2D sTransformPalette;
-flat out vec4 vClipMaskUvBounds;
-out vec4 vClipMaskUv;
 uniform sampler2D sPrimitiveHeadersF;
 uniform isampler2D sPrimitiveHeadersI;
 in ivec4 aData;
 flat out vec4 v_color;
-flat out vec2 v_mask_swizzle;
-flat out vec4 v_uv_bounds;
-out vec2 v_uv;
 
 void main ()
 {
   vec2 glyph_offset_1;
   int color_mode_2;
   float ph_z_3;
-  ivec4 ph_user_data_4;
   int instance_picture_task_address_5;
-  int instance_clip_address_6;
   int instance_segment_index_7;
   int instance_flags_8;
   int instance_resource_address_9;
   instance_picture_task_address_5 = (aData.y >> 16);
-  instance_clip_address_6 = (aData.y & 65535);
   instance_segment_index_7 = (aData.z & 65535);
   instance_flags_8 = (aData.z >> 16);
+  color_mode_2  = (instance_flags_8 & 255);
   instance_resource_address_9 = (aData.w & 16777215);
   ivec2 tmpvar_10;
   tmpvar_10.x = int((2u * (
@@ -65,8 +58,6 @@ void main ()
   tmpvar_10.y = int((uint(aData.x) / 512u));
   vec4 tmpvar_11;
   tmpvar_11 = texelFetchOffset (sPrimitiveHeadersF, tmpvar_10, 0, ivec2(0, 0));
-  vec4 tmpvar_12;
-  tmpvar_12 = texelFetchOffset (sPrimitiveHeadersF, tmpvar_10, 0, ivec2(1, 0));
   ivec2 tmpvar_13;
   tmpvar_13.x = int((2u * (
     uint(aData.x)
@@ -75,7 +66,6 @@ void main ()
   ivec4 tmpvar_14;
   tmpvar_14 = texelFetchOffset (sPrimitiveHeadersI, tmpvar_13, 0, ivec2(0, 0));
   ph_z_3 = float(tmpvar_14.x);
-  ph_user_data_4 = texelFetchOffset (sPrimitiveHeadersI, tmpvar_13, 0, ivec2(1, 0));
   mat4 transform_m_15;
   int tmpvar_16;
   tmpvar_16 = (tmpvar_14.z & 16777215);
@@ -88,47 +78,6 @@ void main ()
   transform_m_15[1] = texelFetchOffset (sTransformPalette, tmpvar_17, 0, ivec2(1, 0));
   transform_m_15[2] = texelFetchOffset (sTransformPalette, tmpvar_17, 0, ivec2(2, 0));
   transform_m_15[3] = texelFetchOffset (sTransformPalette, tmpvar_17, 0, ivec2(3, 0));
-  RectWithSize area_common_data_task_rect_18;
-  float area_common_data_texture_layer_index_19;
-  float area_device_pixel_scale_20;
-  vec2 area_screen_origin_21;
-  if ((instance_clip_address_6 >= 32767)) {
-    area_common_data_task_rect_18 = RectWithSize(vec2(0.0, 0.0), vec2(0.0, 0.0));
-    area_common_data_texture_layer_index_19 = 0.0;
-    area_device_pixel_scale_20 = 0.0;
-    area_screen_origin_21 = vec2(0.0, 0.0);
-  } else {
-    ivec2 tmpvar_22;
-    tmpvar_22.x = int((2u * (
-      uint(instance_clip_address_6)
-     % 512u)));
-    tmpvar_22.y = int((uint(instance_clip_address_6) / 512u));
-    vec4 tmpvar_23;
-    tmpvar_23 = texelFetchOffset (sRenderTasks, tmpvar_22, 0, ivec2(0, 0));
-    vec4 tmpvar_24;
-    tmpvar_24 = texelFetchOffset (sRenderTasks, tmpvar_22, 0, ivec2(1, 0));
-    vec3 tmpvar_25;
-    tmpvar_25 = tmpvar_24.yzw;
-    area_common_data_task_rect_18.p0 = tmpvar_23.xy;
-    area_common_data_task_rect_18.size = tmpvar_23.zw;
-    area_common_data_texture_layer_index_19 = tmpvar_24.x;
-    area_device_pixel_scale_20 = tmpvar_25.x;
-    area_screen_origin_21 = tmpvar_25.yz;
-  };
-  ivec2 tmpvar_26;
-  tmpvar_26.x = int((2u * (
-    uint(instance_picture_task_address_5)
-   % 512u)));
-  tmpvar_26.y = int((uint(instance_picture_task_address_5) / 512u));
-  vec4 tmpvar_27;
-  tmpvar_27 = texelFetchOffset (sRenderTasks, tmpvar_26, 0, ivec2(0, 0));
-  vec4 tmpvar_28;
-  tmpvar_28 = texelFetchOffset (sRenderTasks, tmpvar_26, 0, ivec2(1, 0));
-  int tmpvar_29;
-  tmpvar_29 = ((instance_flags_8 >> 8) & 255);
-  int tmpvar_30;
-  tmpvar_30 = (instance_flags_8 & 255);
-  color_mode_2 = tmpvar_30;
   ivec2 tmpvar_31;
   tmpvar_31.x = int((uint(tmpvar_14.y) % 1024u));
   tmpvar_31.y = int((uint(tmpvar_14.y) / 1024u));
@@ -136,9 +85,6 @@ void main ()
   vec4 tmpvar_33;
   tmpvar_32 = texelFetchOffset (sGpuCache, tmpvar_31, 0, ivec2(0, 0));
   tmpvar_33 = texelFetchOffset (sGpuCache, tmpvar_31, 0, ivec2(1, 0));
-  if ((tmpvar_30 == 0)) {
-    color_mode_2 = uMode;
-  };
   int tmpvar_34;
   tmpvar_34 = ((tmpvar_14.y + 2) + int((
     uint(instance_segment_index_7)
@@ -159,44 +105,27 @@ void main ()
   tmpvar_38 = texelFetchOffset (sGpuCache, tmpvar_37, 0, ivec2(0, 0));
   tmpvar_39 = texelFetchOffset (sGpuCache, tmpvar_37, 0, ivec2(1, 0));
   vec2 tmpvar_40 = vec2(0.125, 0.5);
-  float tmpvar_41;
-  tmpvar_41 = ((float(ph_user_data_4.x) / 65535.0) * tmpvar_28.y);
-  float tmpvar_42;
-  tmpvar_42 = (tmpvar_39.w / tmpvar_41);
+  float tmpvar_41 = 2;
   vec2 tmpvar_43;
   vec2 tmpvar_44;
-  tmpvar_43 = ((tmpvar_42 * (tmpvar_39.yz +
-    (floor(((glyph_offset_1 * tmpvar_41) + tmpvar_40)) / tmpvar_39.w)
+  tmpvar_43 = ((1 / tmpvar_41 * (tmpvar_39.yz +
+    (floor(((glyph_offset_1 * tmpvar_41))) )
   )) + tmpvar_11.zw);
-  tmpvar_44 = (tmpvar_42 * (tmpvar_38.zw - tmpvar_38.xy));
+  tmpvar_44 = ((1 / tmpvar_41)* (tmpvar_38.zw - tmpvar_38.xy));
   vec2 tmpvar_45;
-  tmpvar_45 = min (max ((tmpvar_43 +
+  tmpvar_45 = (tmpvar_43 +
     (tmpvar_44 * aPosition)
-  ), tmpvar_12.xy), (tmpvar_12.xy + tmpvar_12.zw));
+  );
   vec4 tmpvar_46;
   tmpvar_46.zw = vec2(0.0, 1.0);
   tmpvar_46.xy = tmpvar_45;
   vec4 tmpvar_47;
   tmpvar_47 = (transform_m_15 * tmpvar_46);
   vec4 tmpvar_48;
-  tmpvar_48.xy = ((tmpvar_47.xy * tmpvar_28.y) + ((
-    -(tmpvar_28.zw)
-   + tmpvar_27.xy) * tmpvar_47.w));
+  tmpvar_48.xy = ((tmpvar_47.xy * 2));
   tmpvar_48.z = (ph_z_3 * tmpvar_47.w);
   tmpvar_48.w = tmpvar_47.w;
   gl_Position = (uTransform * tmpvar_48);
-  vec2 tmpvar_49;
-  tmpvar_49 = ((tmpvar_45 - tmpvar_43) / tmpvar_44);
-  vec4 tmpvar_50;
-  tmpvar_50.xy = area_common_data_task_rect_18.p0;
-  tmpvar_50.zw = (area_common_data_task_rect_18.p0 + area_common_data_task_rect_18.size);
-  vClipMaskUvBounds = tmpvar_50;
-  vec4 tmpvar_51;
-  tmpvar_51.xy = ((tmpvar_47.xy * area_device_pixel_scale_20) + (tmpvar_47.w * (area_common_data_task_rect_18.p0 - area_screen_origin_21)));
-  tmpvar_51.z = area_common_data_texture_layer_index_19;
-  tmpvar_51.w = tmpvar_47.w;
-  vClipMaskUv = tmpvar_51;
-  v_mask_swizzle = vec2(0.0, 1.0);
 
   //
   //
@@ -217,12 +146,6 @@ void main ()
     v_color = vec4(1.0, 0.0, 1.0, 1.0); // purple
   };
 
-  // Ignore the rest
-
-  vec2 tmpvar_52;
-  tmpvar_52 = vec2(textureSize (sColor0, 0));
-  v_uv = mix ((tmpvar_38.xy / tmpvar_52), (tmpvar_38.zw / tmpvar_52), tmpvar_49);
-  v_uv_bounds = ((tmpvar_38 + vec4(0.5, 0.5, -0.5, -0.5)) / tmpvar_52.xyxy);
 }
 
 
@@ -235,35 +158,17 @@ void main ()
 #include shared,prim_shared
 
 flat varying vec4 v_color;
-flat varying vec2 v_mask_swizzle;
 // Normalized bounds of the source image in the texture.
-flat varying vec4 v_uv_bounds;
 
 // Interpolated UV coordinates to sample.
-varying vec2 v_uv;
 
 
-#ifdef WR_FEATURE_GLYPH_TRANSFORM
-varying vec4 v_uv_clip;
-#endif
 
 #ifdef WR_VERTEX_SHADER
 
 #define VECS_PER_TEXT_RUN           2
 #define GLYPHS_PER_GPU_BLOCK        2U
 
-#ifdef WR_FEATURE_GLYPH_TRANSFORM
-RectWithSize transform_rect(RectWithSize rect, mat2 transform) {
-    vec2 center = transform * (rect.p0 + rect.size * 0.5);
-    vec2 radius = mat2(abs(transform[0]), abs(transform[1])) * (rect.size * 0.5);
-    return RectWithSize(center - radius, radius * 2.0);
-}
-
-bool rect_inside_rect(RectWithSize little, RectWithSize big) {
-    return all(lessThanEqual(vec4(big.p0, little.p0 + little.size),
-                             vec4(little.p0, big.p0 + big.size)));
-}
-#endif //WR_FEATURE_GLYPH_TRANSFORM
 
 struct Glyph {
     vec2 offset;
@@ -365,42 +270,6 @@ void main() {
     // be set. Otherwise, regardless of whether the raster space is LOCAL or SCREEN,
     // we ignored the transform during glyph rasterization, and need to snap just using
     // the device pixel scale and the raster scale.
-#ifdef WR_FEATURE_GLYPH_TRANSFORM
-    // Transform from local space to glyph space.
-    mat2 glyph_transform = mat2(transform.m) * task.device_pixel_scale;
-    vec2 glyph_translation = transform.m[3].xy * task.device_pixel_scale;
-
-    // Transform from glyph space back to local space.
-    mat2 glyph_transform_inv = inverse(glyph_transform);
-
-    // Glyph raster pixels include the impact of the transform. This path can only be
-    // entered for 3d transforms that can be coerced into a 2d transform; they have no
-    // perspective, and have a 2d inverse. This is a looser condition than axis aligned
-    // transforms because it also allows 2d rotations.
-    vec2 raster_glyph_offset = floor(glyph_transform * glyph.offset + snap_bias);
-
-    // We want to eliminate any subpixel translation in device space to ensure glyph
-    // snapping is stable for equivalent glyph subpixel positions. Note that we must take
-    // into account the translation from the transform for snapping purposes.
-    vec2 raster_text_offset = floor(glyph_transform * text_offset + glyph_translation + 0.5) - glyph_translation;
-
-    // Compute the glyph rect in glyph space.
-    RectWithSize glyph_rect = RectWithSize(res.offset + raster_glyph_offset + raster_text_offset,
-                                           res.uv_rect.zw - res.uv_rect.xy);
-
-    // The glyph rect is in glyph space, so transform it back to local space.
-    RectWithSize local_rect = transform_rect(glyph_rect, glyph_transform_inv);
-
-    // Select the corner of the glyph's local space rect that we are processing.
-    vec2 local_pos = local_rect.p0 + local_rect.size * aPosition.xy;
-
-    // If the glyph's local rect would fit inside the local clip rect, then select a corner from
-    // the device space glyph rect to reduce overdraw of clipped pixels in the fragment shader.
-    // Otherwise, fall back to clamping the glyph's local rect to the local clip rect.
-    if (rect_inside_rect(local_rect, ph.local_clip_rect)) {
-        local_pos = glyph_transform_inv * (glyph_rect.p0 + glyph_rect.size * aPosition.xy);
-    }
-#else
     float raster_scale = float(ph.user_data.x) / 65535.0;
 
     // Scale in which the glyph is snapped when rasterized.
@@ -435,7 +304,6 @@ void main() {
 
     // Select the corner of the glyph rect that we are processing.
     vec2 local_pos = glyph_rect.p0 + glyph_rect.size * aPosition.xy;
-#endif
 
     VertexInfo vi = write_vertex(
         local_pos,
@@ -445,38 +313,28 @@ void main() {
         task
     );
 
-#ifdef WR_FEATURE_GLYPH_TRANSFORM
-    vec2 f = (glyph_transform * vi.local_pos - glyph_rect.p0) / glyph_rect.size;
-    v_uv_clip = vec4(f, 1.0 - f);
-#else
     vec2 f = (vi.local_pos - glyph_rect.p0) / glyph_rect.size;
-#endif
 
     write_clip(vi.world_pos, clip_area, task);
 
     switch (color_mode) {
         case COLOR_MODE_ALPHA:
         case COLOR_MODE_BITMAP:
-            v_mask_swizzle = vec2(0.0, 1.0);
             v_color = text.color;
             break;
         case COLOR_MODE_SUBPX_BG_PASS2:
         case COLOR_MODE_SUBPX_DUAL_SOURCE:
-            v_mask_swizzle = vec2(1.0, 0.0);
             v_color = text.color;
             break;
         case COLOR_MODE_SUBPX_CONST_COLOR:
         case COLOR_MODE_SUBPX_BG_PASS0:
         case COLOR_MODE_COLOR_BITMAP:
-            v_mask_swizzle = vec2(1.0, 0.0);
             v_color = vec4(text.color.a);
             break;
         case COLOR_MODE_SUBPX_BG_PASS1:
-            v_mask_swizzle = vec2(-1.0, 1.0);
             v_color = vec4(text.color.a) * text.bg_color;
             break;
         default:
-            v_mask_swizzle = vec2(0.0);
             v_color = vec4(1.0);
     }
 
@@ -484,34 +342,15 @@ void main() {
     vec2 st0 = res.uv_rect.xy / texture_size;
     vec2 st1 = res.uv_rect.zw / texture_size;
 
-    v_uv = mix(st0, st1, f);
-    v_uv_bounds = (res.uv_rect + vec4(0.5, 0.5, -0.5, -0.5)) / texture_size.xyxy;
 }
 
 #endif // WR_VERTEX_SHADER
 
 #ifdef WR_FRAGMENT_SHADER
 
-Fragment text_fs(void) {
-    Fragment frag;
-
-    vec2 tc = clamp(v_uv, v_uv_bounds.xy, v_uv_bounds.zw);
-    vec4 mask = texture(sColor0, tc);
-    mask.rgb = mask.rgb * v_mask_swizzle.x + mask.aaa * v_mask_swizzle.y;
-
-    frag.color = v_color * mask;
-
-    return frag;
-}
-
-
 void main() {
-    Fragment frag = text_fs();
 
-    float clip_mask = do_clip();
-    frag.color *= clip_mask;
-
-        write_output(frag.color);
+        write_output(v_color);
 }
 
 #endif // WR_FRAGMENT_SHADER
