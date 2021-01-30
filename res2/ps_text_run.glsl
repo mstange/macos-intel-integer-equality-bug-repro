@@ -87,8 +87,6 @@ void main ()
     uint(instance_picture_task_address_5)
    % 512u)));
   tmpvar_26.y = int((uint(instance_picture_task_address_5) / 512u));
-  vec4 tmpvar_28;
-  tmpvar_28 = texelFetchOffset (sRenderTasks, tmpvar_26, 0, ivec2(1, 0));
   ivec2 tmpvar_31;
   tmpvar_31.x = int((uint(tmpvar_14.y) % 1024u));
   tmpvar_31.y = int((uint(tmpvar_14.y) / 1024u));
@@ -117,7 +115,7 @@ void main ()
   tmpvar_39 = texelFetchOffset (sGpuCache, tmpvar_37, 0, ivec2(1, 0));
   vec2 tmpvar_40 = vec2(0.125, 0.5);
   float tmpvar_41;
-  tmpvar_41 = ((float(ph_user_data_4.x) / 65535.0) * tmpvar_28.y);
+  tmpvar_41 = ((float(ph_user_data_4.x) / 65535.0) * 2);
   float tmpvar_42;
   tmpvar_42 = (tmpvar_39.w / tmpvar_41);
   vec2 tmpvar_43;
