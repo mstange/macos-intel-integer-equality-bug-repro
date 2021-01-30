@@ -66,12 +66,10 @@ void main ()
   ivec2 tmpvar_37;
   tmpvar_37.x = int((uint(instance_resource_address_9) % 1024u));
   tmpvar_37.y = int((uint(instance_resource_address_9) / 1024u));
-  vec4 tmpvar_38;
-  tmpvar_38 = texelFetchOffset (sGpuCache, tmpvar_37, 0, ivec2(0, 0));
-  vec2 tmpvar_44;
-  tmpvar_44 = ((1 / 2.)* (tmpvar_38.zw - tmpvar_38.xy));
-  vec2 tmpvar_45;
-  tmpvar_45 = (glyph_offset_1 + (tmpvar_44 * aPosition));
+  
+  vec4 tmpvar_38 = texelFetchOffset (sGpuCache, tmpvar_37, 0, ivec2(0, 0));
+  vec2 tmpvar_44 = ((1 / 2.)* (tmpvar_38.zw - tmpvar_38.xy));
+  vec2 tmpvar_45 = (glyph_offset_1 + (tmpvar_44 * aPosition));
   
   vec4 tmpvar_48;
   tmpvar_48.xy = ((tmpvar_45.xy * 2));
