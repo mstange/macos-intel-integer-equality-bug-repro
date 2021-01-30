@@ -39,7 +39,6 @@ uniform isampler2D sPrimitiveHeadersI;
 in ivec4 aData;
 flat out vec4 v_color;
 flat out vec2 v_mask_swizzle;
-out vec2 v_uv;
 
 void main ()
 {
@@ -220,7 +219,6 @@ void main ()
 
   vec2 tmpvar_52;
   tmpvar_52 = vec2(textureSize (sColor0, 0));
-  v_uv = mix ((tmpvar_38.xy / tmpvar_52), (tmpvar_38.zw / tmpvar_52), tmpvar_49);
 }
 
 
@@ -237,7 +235,6 @@ flat varying vec2 v_mask_swizzle;
 // Normalized bounds of the source image in the texture.
 
 // Interpolated UV coordinates to sample.
-varying vec2 v_uv;
 
 
 
@@ -424,7 +421,6 @@ void main() {
     vec2 st0 = res.uv_rect.xy / texture_size;
     vec2 st1 = res.uv_rect.zw / texture_size;
 
-    v_uv = mix(st0, st1, f);
 }
 
 #endif // WR_VERTEX_SHADER
