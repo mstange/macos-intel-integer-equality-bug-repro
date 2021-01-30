@@ -37,10 +37,8 @@ void main ()
 {
   vec2 glyph_offset_1;
   int color_mode_2;
-  int instance_picture_task_address_5;
   int instance_flags_8;
   int instance_resource_address_9;
-  instance_picture_task_address_5 = (aData.y >> 16);
   instance_flags_8 = (aData.z >> 16);
   color_mode_2  = (instance_flags_8 & 255);
   instance_resource_address_9 = (aData.w & 16777215);
@@ -48,8 +46,7 @@ void main ()
   ivec2 tmpvar_10;
   tmpvar_10.x = int((2u * (uint(aData.x) % 512u)));
   tmpvar_10.y = int((uint(aData.x) / 512u));
-  vec4 tmpvar_11;
-  tmpvar_11 = texelFetchOffset (sPrimitiveHeadersF, tmpvar_10, 0, ivec2(0, 0));
+  vec4 tmpvar_11 = texelFetchOffset (sPrimitiveHeadersF, tmpvar_10, 0, ivec2(0, 0));
   
   // even though transform_m_15[2] is not read it's important for this test
   mat4 transform_m_15;
