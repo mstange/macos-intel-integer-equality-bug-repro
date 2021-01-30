@@ -93,15 +93,11 @@ void main ()
   tmpvar_45 = (tmpvar_43 +
     (tmpvar_44 * aPosition)
   );
-  vec4 tmpvar_46;
-  tmpvar_46.zw = vec2(0.0, 1.0);
-  tmpvar_46.xy = tmpvar_45;
-  vec4 tmpvar_47;
-  tmpvar_47 = (tmpvar_46);
+  
   vec4 tmpvar_48;
-  tmpvar_48.xy = ((tmpvar_47.xy * 2));
-  tmpvar_48.z = (1 * tmpvar_47.w);
-  tmpvar_48.w = tmpvar_47.w;
+  tmpvar_48.xy = ((tmpvar_45.xy * 2));
+  tmpvar_48.z = 0;
+  tmpvar_48.w = 1;
   gl_Position = (uTransform * tmpvar_48);
 
   //
