@@ -506,12 +506,8 @@ Fragment text_fs(void) {
 
 
 void main() {
-    Fragment frag = text_fs();
 
-    float clip_mask = do_clip();
-    frag.color *= clip_mask;
-
-        write_output(frag.color);
+        write_output(v_color);
 }
 
 #endif // WR_FRAGMENT_SHADER
