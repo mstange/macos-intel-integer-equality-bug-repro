@@ -41,7 +41,6 @@ void main ()
 {
   vec2 glyph_offset_1;
   int color_mode_2;
-  float ph_z_3;
   int instance_picture_task_address_5;
   int instance_segment_index_7;
   int instance_flags_8;
@@ -65,10 +64,10 @@ void main ()
   tmpvar_13.y = int((uint(aData.x) / 512u));
   ivec4 tmpvar_14;
   tmpvar_14 = texelFetchOffset (sPrimitiveHeadersI, tmpvar_13, 0, ivec2(0, 0));
-  ph_z_3 = float(tmpvar_14.x);
   mat4 transform_m_15;
   int tmpvar_16;
   tmpvar_16 = (tmpvar_14.z & 16777215);
+  tmpvar_16 = 0;
   ivec2 tmpvar_17;
   tmpvar_17.x = int((8u * (
     uint(tmpvar_16)
@@ -101,14 +100,12 @@ void main ()
   tmpvar_37.x = int((uint(instance_resource_address_9) % 1024u));
   tmpvar_37.y = int((uint(instance_resource_address_9) / 1024u));
   vec4 tmpvar_38;
-  vec4 tmpvar_39;
   tmpvar_38 = texelFetchOffset (sGpuCache, tmpvar_37, 0, ivec2(0, 0));
-  tmpvar_39 = texelFetchOffset (sGpuCache, tmpvar_37, 0, ivec2(1, 0));
   vec2 tmpvar_40 = vec2(0.125, 0.5);
   float tmpvar_41 = 2;
   vec2 tmpvar_43;
   vec2 tmpvar_44;
-  tmpvar_43 = ((1 / tmpvar_41 * (tmpvar_39.yz +
+  tmpvar_43 = ((1 / tmpvar_41 * (
     (floor(((glyph_offset_1 * tmpvar_41))) )
   )) + tmpvar_11.zw);
   tmpvar_44 = ((1 / tmpvar_41)* (tmpvar_38.zw - tmpvar_38.xy));
@@ -123,7 +120,7 @@ void main ()
   tmpvar_47 = (transform_m_15 * tmpvar_46);
   vec4 tmpvar_48;
   tmpvar_48.xy = ((tmpvar_47.xy * 2));
-  tmpvar_48.z = (ph_z_3 * tmpvar_47.w);
+  tmpvar_48.z = (1 * tmpvar_47.w);
   tmpvar_48.w = tmpvar_47.w;
   gl_Position = (uTransform * tmpvar_48);
 
