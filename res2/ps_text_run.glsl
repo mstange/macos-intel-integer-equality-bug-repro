@@ -57,11 +57,6 @@ void main ()
   tmpvar_10.y = int((uint(aData.x) / 512u));
   vec4 tmpvar_11;
   tmpvar_11 = texelFetchOffset (sPrimitiveHeadersF, tmpvar_10, 0, ivec2(0, 0));
-  ivec2 tmpvar_13;
-  tmpvar_13.x = int((2u * (
-    uint(aData.x)
-   % 512u)));
-  tmpvar_13.y = int((uint(aData.x) / 512u));
   mat4 transform_m_15;
   
   // even though transform_m_15[2] is not read it's important for this test
@@ -95,9 +90,8 @@ void main ()
   float tmpvar_41 = 2;
   vec2 tmpvar_43;
   vec2 tmpvar_44;
-  tmpvar_43 = ((1 / tmpvar_41 * (
-    (floor(((glyph_offset_1 * tmpvar_41))) )
-  )) + tmpvar_11.zw);
+  tmpvar_43 = (1 / tmpvar_41 * (
+    glyph_offset_1 * tmpvar_41 ));
   tmpvar_44 = ((1 / tmpvar_41)* (tmpvar_38.zw - tmpvar_38.xy));
   vec2 tmpvar_45;
   tmpvar_45 = (tmpvar_43 +
