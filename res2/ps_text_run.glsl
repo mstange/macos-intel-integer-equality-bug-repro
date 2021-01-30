@@ -499,7 +499,7 @@ Fragment text_fs(void) {
     vec4 mask = texture(sColor0, tc);
     mask.rgb = mask.rgb * v_mask_swizzle.x + mask.aaa * v_mask_swizzle.y;
 
-    frag.color = v_color * mask;
+    frag.color = v_color;// * mask;
 
     return frag;
 }
