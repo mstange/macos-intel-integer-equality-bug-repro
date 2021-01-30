@@ -82,11 +82,6 @@ void main ()
   transform_m_15[1] = texelFetchOffset (sTransformPalette, tmpvar_17, 0, ivec2(1, 0));
   transform_m_15[2] = texelFetchOffset (sTransformPalette, tmpvar_17, 0, ivec2(2, 0));
   transform_m_15[3] = texelFetchOffset (sTransformPalette, tmpvar_17, 0, ivec2(3, 0));
-  ivec2 tmpvar_26;
-  tmpvar_26.x = int((2u * (
-    uint(instance_picture_task_address_5)
-   % 512u)));
-  tmpvar_26.y = int((uint(instance_picture_task_address_5) / 512u));
   ivec2 tmpvar_31;
   tmpvar_31.x = int((uint(tmpvar_14.y) % 1024u));
   tmpvar_31.y = int((uint(tmpvar_14.y) / 1024u));
