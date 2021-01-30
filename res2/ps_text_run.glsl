@@ -32,13 +32,10 @@ uniform sampler2D sColor0;
 uniform sampler2D sRenderTasks;
 uniform sampler2D sGpuCache;
 uniform sampler2D sTransformPalette;
-flat out vec4 vClipMaskUvBounds;
-out vec4 vClipMaskUv;
 uniform sampler2D sPrimitiveHeadersF;
 uniform isampler2D sPrimitiveHeadersI;
 in ivec4 aData;
 flat out vec4 v_color;
-flat out vec2 v_mask_swizzle;
 
 void main ()
 {
@@ -183,18 +180,6 @@ void main ()
   tmpvar_48.z = (ph_z_3 * tmpvar_47.w);
   tmpvar_48.w = tmpvar_47.w;
   gl_Position = (uTransform * tmpvar_48);
-  vec2 tmpvar_49;
-  tmpvar_49 = ((tmpvar_45 - tmpvar_43) / tmpvar_44);
-  vec4 tmpvar_50;
-  tmpvar_50.xy = area_common_data_task_rect_18.p0;
-  tmpvar_50.zw = (area_common_data_task_rect_18.p0 + area_common_data_task_rect_18.size);
-  vClipMaskUvBounds = tmpvar_50;
-  vec4 tmpvar_51;
-  tmpvar_51.xy = ((tmpvar_47.xy * area_device_pixel_scale_20) + (tmpvar_47.w * (area_common_data_task_rect_18.p0 - area_screen_origin_21)));
-  tmpvar_51.z = area_common_data_texture_layer_index_19;
-  tmpvar_51.w = tmpvar_47.w;
-  vClipMaskUv = tmpvar_51;
-  v_mask_swizzle = vec2(0.0, 1.0);
 
   //
   //
@@ -215,10 +200,6 @@ void main ()
     v_color = vec4(1.0, 0.0, 1.0, 1.0); // purple
   };
 
-  // Ignore the rest
-
-  vec2 tmpvar_52;
-  tmpvar_52 = vec2(textureSize (sColor0, 0));
 }
 
 
@@ -231,7 +212,6 @@ void main ()
 #include shared,prim_shared
 
 flat varying vec4 v_color;
-flat varying vec2 v_mask_swizzle;
 // Normalized bounds of the source image in the texture.
 
 // Interpolated UV coordinates to sample.
@@ -394,26 +374,21 @@ void main() {
     switch (color_mode) {
         case COLOR_MODE_ALPHA:
         case COLOR_MODE_BITMAP:
-            v_mask_swizzle = vec2(0.0, 1.0);
             v_color = text.color;
             break;
         case COLOR_MODE_SUBPX_BG_PASS2:
         case COLOR_MODE_SUBPX_DUAL_SOURCE:
-            v_mask_swizzle = vec2(1.0, 0.0);
             v_color = text.color;
             break;
         case COLOR_MODE_SUBPX_CONST_COLOR:
         case COLOR_MODE_SUBPX_BG_PASS0:
         case COLOR_MODE_COLOR_BITMAP:
-            v_mask_swizzle = vec2(1.0, 0.0);
             v_color = vec4(text.color.a);
             break;
         case COLOR_MODE_SUBPX_BG_PASS1:
-            v_mask_swizzle = vec2(-1.0, 1.0);
             v_color = vec4(text.color.a) * text.bg_color;
             break;
         default:
-            v_mask_swizzle = vec2(0.0);
             v_color = vec4(1.0);
     }
 
