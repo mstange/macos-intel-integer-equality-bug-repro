@@ -1,4 +1,4 @@
-This is a snapshot of a webrender revision that was hitting a macOS/Intel shader bug. [This particular bug was filed as bug 1689510](https://bugzilla.mozilla.org/show_bug.cgi?id=1689510), but we have hit variations of broken integer equality comparisons [many times before](https://github.com/servo/webrender/wiki/Driver-issues#2864---mac-glsl-compiler-bug-with-integer-comparisons).
+This is a snapshot of a webrender revision that was hitting a macOS/Intel OpenGL shader compilation bug. [This particular bug was filed as bug 1689510](https://bugzilla.mozilla.org/show_bug.cgi?id=1689510), but we have hit variations of broken integer equality comparisons [many times before](https://github.com/servo/webrender/wiki/Driver-issues#2864---mac-glsl-compiler-bug-with-integer-comparisons).
 
 It has been reduced by some amount but not by much.
 
