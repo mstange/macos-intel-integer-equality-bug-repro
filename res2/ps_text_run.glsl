@@ -63,12 +63,9 @@ void main ()
    % 512u)));
   tmpvar_13.y = int((uint(aData.x) / 512u));
   mat4 transform_m_15;
-  ivec2 tmpvar_17;
-  tmpvar_17.x = 0;
-  tmpvar_17.y = 0;
   
   // even though transform_m_15[2] is not read it's important for this test
-  transform_m_15[2] = texelFetchOffset (sTransformPalette, tmpvar_17, 0, ivec2(2, 0));
+  transform_m_15[2] = texelFetchOffset (sTransformPalette, ivec2(0, 0), 0, ivec2(2, 0));
   
   ivec2 tmpvar_31;
   tmpvar_31.x = int((uint(0) % 1024u));
