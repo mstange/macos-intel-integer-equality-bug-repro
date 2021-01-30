@@ -76,7 +76,7 @@ void main ()
   tmpvar_35.y = int((uint(tmpvar_34) / 1024u));
   vec4 tmpvar_36;
   tmpvar_36 = texelFetch (sGpuCache, tmpvar_35, 0);
-  glyph_offset_1 = (mix(tmpvar_36.xy, tmpvar_36.zw, bvec2(true)) + tmpvar_11.xy);
+  glyph_offset_1 = (tmpvar_36.zw + tmpvar_11.xy);
   
 
   ivec2 tmpvar_37;
