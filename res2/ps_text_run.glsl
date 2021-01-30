@@ -42,11 +42,9 @@ void main ()
   vec2 glyph_offset_1;
   int color_mode_2;
   int instance_picture_task_address_5;
-  int instance_segment_index_7;
   int instance_flags_8;
   int instance_resource_address_9;
   instance_picture_task_address_5 = (aData.y >> 16);
-  instance_segment_index_7 = (aData.z & 65535);
   instance_flags_8 = (aData.z >> 16);
   color_mode_2  = (instance_flags_8 & 255);
   instance_resource_address_9 = (aData.w & 16777215);
@@ -71,7 +69,7 @@ void main ()
   tmpvar_33 = texelFetchOffset (sGpuCache, tmpvar_31, 0, ivec2(1, 0));
   int tmpvar_34;
   tmpvar_34 = ((0 + 2) + int((
-    uint(instance_segment_index_7)
+    uint(0)
    / 2u)));
   ivec2 tmpvar_35;
   tmpvar_35.x = int((uint(tmpvar_34) % 1024u));
@@ -79,7 +77,7 @@ void main ()
   vec4 tmpvar_36;
   tmpvar_36 = texelFetch (sGpuCache, tmpvar_35, 0);
   glyph_offset_1 = (mix(tmpvar_36.xy, tmpvar_36.zw, bvec2((
-    (uint(instance_segment_index_7) % 2u)
+    (uint(0) % 2u)
    != uint(0)))) + tmpvar_11.xy);
   ivec2 tmpvar_37;
   tmpvar_37.x = int((uint(instance_resource_address_9) % 1024u));
