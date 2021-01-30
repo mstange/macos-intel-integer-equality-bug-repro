@@ -116,7 +116,7 @@ void main ()
   vec2 tmpvar_43;
   vec2 tmpvar_44;
   tmpvar_43 = ((tmpvar_42 * (tmpvar_39.yz +
-    (floor(((glyph_offset_1 * tmpvar_41) + tmpvar_40)) / tmpvar_39.w)
+    (floor(((glyph_offset_1 * tmpvar_41))) / tmpvar_39.w)
   )) + tmpvar_11.zw);
   tmpvar_44 = (tmpvar_42 * (tmpvar_38.zw - tmpvar_38.xy));
   vec2 tmpvar_45;
