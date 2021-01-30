@@ -115,9 +115,9 @@ void main ()
   )) + tmpvar_11.zw);
   tmpvar_44 = ((1 / tmpvar_41)* (tmpvar_38.zw - tmpvar_38.xy));
   vec2 tmpvar_45;
-  tmpvar_45 = min (max ((tmpvar_43 +
+  tmpvar_45 = (tmpvar_43 +
     (tmpvar_44 * aPosition)
-  ), tmpvar_12.xy), (tmpvar_12.xy + tmpvar_12.zw));
+  );
   vec4 tmpvar_46;
   tmpvar_46.zw = vec2(0.0, 1.0);
   tmpvar_46.xy = tmpvar_45;
