@@ -42,7 +42,6 @@ void main ()
   vec2 glyph_offset_1;
   int color_mode_2;
   float ph_z_3;
-  ivec4 ph_user_data_4;
   int instance_picture_task_address_5;
   int instance_segment_index_7;
   int instance_flags_8;
@@ -69,7 +68,6 @@ void main ()
   ivec4 tmpvar_14;
   tmpvar_14 = texelFetchOffset (sPrimitiveHeadersI, tmpvar_13, 0, ivec2(0, 0));
   ph_z_3 = float(tmpvar_14.x);
-  ph_user_data_4 = texelFetchOffset (sPrimitiveHeadersI, tmpvar_13, 0, ivec2(1, 0));
   mat4 transform_m_15;
   int tmpvar_16;
   tmpvar_16 = (tmpvar_14.z & 16777215);
