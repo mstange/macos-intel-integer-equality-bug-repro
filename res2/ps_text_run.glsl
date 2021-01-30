@@ -21,10 +21,6 @@ precision highp int;
 // ps_text_run
 // features: ["ALPHA_PASS", "TEXTURE_2D"]
 
-struct RectWithSize {
-  vec2 p0;
-  vec2 size;
-};
 uniform int uMode;
 uniform mat4 uTransform;
 in vec2 aPosition;
@@ -48,21 +44,17 @@ void main ()
   instance_flags_8 = (aData.z >> 16);
   color_mode_2  = (instance_flags_8 & 255);
   instance_resource_address_9 = (aData.w & 16777215);
+
   ivec2 tmpvar_10;
-  tmpvar_10.x = int((2u * (
-    uint(aData.x)
-   % 512u)));
+  tmpvar_10.x = int((2u * (uint(aData.x) % 512u)));
   tmpvar_10.y = int((uint(aData.x) / 512u));
   vec4 tmpvar_11;
   tmpvar_11 = texelFetchOffset (sPrimitiveHeadersF, tmpvar_10, 0, ivec2(0, 0));
-  mat4 transform_m_15;
   
   // even though transform_m_15[2] is not read it's important for this test
+  mat4 transform_m_15;
   transform_m_15[2] = texelFetchOffset (sTransformPalette, ivec2(0, 0), 0, ivec2(2, 0));
   
-  ivec2 tmpvar_31;
-  tmpvar_31.x = int((uint(0) % 1024u));
-  tmpvar_31.y = int((uint(0) / 1024u));
   vec4 tmpvar_32;
   vec4 tmpvar_33;
   tmpvar_32 = texelFetchOffset (sGpuCache, ivec2(0, 0), 0, ivec2(0, 0));
