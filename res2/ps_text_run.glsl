@@ -87,29 +87,10 @@ void main ()
   float area_common_data_texture_layer_index_19;
   float area_device_pixel_scale_20;
   vec2 area_screen_origin_21;
-  if ((instance_clip_address_6 >= 32767)) {
     area_common_data_task_rect_18 = RectWithSize(vec2(0.0, 0.0), vec2(0.0, 0.0));
     area_common_data_texture_layer_index_19 = 0.0;
     area_device_pixel_scale_20 = 0.0;
     area_screen_origin_21 = vec2(0.0, 0.0);
-  } else {
-    ivec2 tmpvar_22;
-    tmpvar_22.x = int((2u * (
-      uint(instance_clip_address_6)
-     % 512u)));
-    tmpvar_22.y = int((uint(instance_clip_address_6) / 512u));
-    vec4 tmpvar_23;
-    tmpvar_23 = texelFetchOffset (sRenderTasks, tmpvar_22, 0, ivec2(0, 0));
-    vec4 tmpvar_24;
-    tmpvar_24 = texelFetchOffset (sRenderTasks, tmpvar_22, 0, ivec2(1, 0));
-    vec3 tmpvar_25;
-    tmpvar_25 = tmpvar_24.yzw;
-    area_common_data_task_rect_18.p0 = tmpvar_23.xy;
-    area_common_data_task_rect_18.size = tmpvar_23.zw;
-    area_common_data_texture_layer_index_19 = tmpvar_24.x;
-    area_device_pixel_scale_20 = tmpvar_25.x;
-    area_screen_origin_21 = tmpvar_25.yz;
-  };
   ivec2 tmpvar_26;
   tmpvar_26.x = int((2u * (
     uint(instance_picture_task_address_5)
