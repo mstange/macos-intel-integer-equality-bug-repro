@@ -499,15 +499,7 @@ Fragment text_fs(void) {
     vec4 mask = texture(sColor0, tc);
     mask.rgb = mask.rgb * v_mask_swizzle.x + mask.aaa * v_mask_swizzle.y;
 
-    #ifdef WR_FEATURE_GLYPH_TRANSFORM
-        mask *= float(all(greaterThanEqual(v_uv_clip, vec4(0.0))));
-    #endif
-
     frag.color = v_color * mask;
-
-    #ifdef WR_FEATURE_DUAL_SOURCE_BLENDING
-        frag.blend = v_color.a * mask;
-    #endif
 
     return frag;
 }
@@ -519,14 +511,7 @@ void main() {
     float clip_mask = do_clip();
     frag.color *= clip_mask;
 
-    #if defined(WR_FEATURE_DEBUG_OVERDRAW)
-        oFragColor = WR_DEBUG_OVERDRAW_COLOR;
-    #elif defined(WR_FEATURE_DUAL_SOURCE_BLENDING)
-        oFragColor = frag.color;
-        oFragBlend = frag.blend * clip_mask;
-    #else
         write_output(frag.color);
-    #endif
 }
 
 #endif // WR_FRAGMENT_SHADER
