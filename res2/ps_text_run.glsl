@@ -39,7 +39,6 @@ uniform isampler2D sPrimitiveHeadersI;
 in ivec4 aData;
 flat out vec4 v_color;
 flat out vec2 v_mask_swizzle;
-flat out vec4 v_uv_bounds;
 out vec2 v_uv;
 
 void main ()
@@ -222,7 +221,6 @@ void main ()
   vec2 tmpvar_52;
   tmpvar_52 = vec2(textureSize (sColor0, 0));
   v_uv = mix ((tmpvar_38.xy / tmpvar_52), (tmpvar_38.zw / tmpvar_52), tmpvar_49);
-  v_uv_bounds = ((tmpvar_38 + vec4(0.5, 0.5, -0.5, -0.5)) / tmpvar_52.xyxy);
 }
 
 
@@ -237,33 +235,17 @@ void main ()
 flat varying vec4 v_color;
 flat varying vec2 v_mask_swizzle;
 // Normalized bounds of the source image in the texture.
-flat varying vec4 v_uv_bounds;
 
 // Interpolated UV coordinates to sample.
 varying vec2 v_uv;
 
 
-#ifdef WR_FEATURE_GLYPH_TRANSFORM
-varying vec4 v_uv_clip;
-#endif
 
 #ifdef WR_VERTEX_SHADER
 
 #define VECS_PER_TEXT_RUN           2
 #define GLYPHS_PER_GPU_BLOCK        2U
 
-#ifdef WR_FEATURE_GLYPH_TRANSFORM
-RectWithSize transform_rect(RectWithSize rect, mat2 transform) {
-    vec2 center = transform * (rect.p0 + rect.size * 0.5);
-    vec2 radius = mat2(abs(transform[0]), abs(transform[1])) * (rect.size * 0.5);
-    return RectWithSize(center - radius, radius * 2.0);
-}
-
-bool rect_inside_rect(RectWithSize little, RectWithSize big) {
-    return all(lessThanEqual(vec4(big.p0, little.p0 + little.size),
-                             vec4(little.p0, big.p0 + big.size)));
-}
-#endif //WR_FEATURE_GLYPH_TRANSFORM
 
 struct Glyph {
     vec2 offset;
@@ -365,42 +347,6 @@ void main() {
     // be set. Otherwise, regardless of whether the raster space is LOCAL or SCREEN,
     // we ignored the transform during glyph rasterization, and need to snap just using
     // the device pixel scale and the raster scale.
-#ifdef WR_FEATURE_GLYPH_TRANSFORM
-    // Transform from local space to glyph space.
-    mat2 glyph_transform = mat2(transform.m) * task.device_pixel_scale;
-    vec2 glyph_translation = transform.m[3].xy * task.device_pixel_scale;
-
-    // Transform from glyph space back to local space.
-    mat2 glyph_transform_inv = inverse(glyph_transform);
-
-    // Glyph raster pixels include the impact of the transform. This path can only be
-    // entered for 3d transforms that can be coerced into a 2d transform; they have no
-    // perspective, and have a 2d inverse. This is a looser condition than axis aligned
-    // transforms because it also allows 2d rotations.
-    vec2 raster_glyph_offset = floor(glyph_transform * glyph.offset + snap_bias);
-
-    // We want to eliminate any subpixel translation in device space to ensure glyph
-    // snapping is stable for equivalent glyph subpixel positions. Note that we must take
-    // into account the translation from the transform for snapping purposes.
-    vec2 raster_text_offset = floor(glyph_transform * text_offset + glyph_translation + 0.5) - glyph_translation;
-
-    // Compute the glyph rect in glyph space.
-    RectWithSize glyph_rect = RectWithSize(res.offset + raster_glyph_offset + raster_text_offset,
-                                           res.uv_rect.zw - res.uv_rect.xy);
-
-    // The glyph rect is in glyph space, so transform it back to local space.
-    RectWithSize local_rect = transform_rect(glyph_rect, glyph_transform_inv);
-
-    // Select the corner of the glyph's local space rect that we are processing.
-    vec2 local_pos = local_rect.p0 + local_rect.size * aPosition.xy;
-
-    // If the glyph's local rect would fit inside the local clip rect, then select a corner from
-    // the device space glyph rect to reduce overdraw of clipped pixels in the fragment shader.
-    // Otherwise, fall back to clamping the glyph's local rect to the local clip rect.
-    if (rect_inside_rect(local_rect, ph.local_clip_rect)) {
-        local_pos = glyph_transform_inv * (glyph_rect.p0 + glyph_rect.size * aPosition.xy);
-    }
-#else
     float raster_scale = float(ph.user_data.x) / 65535.0;
 
     // Scale in which the glyph is snapped when rasterized.
@@ -435,7 +381,6 @@ void main() {
 
     // Select the corner of the glyph rect that we are processing.
     vec2 local_pos = glyph_rect.p0 + glyph_rect.size * aPosition.xy;
-#endif
 
     VertexInfo vi = write_vertex(
         local_pos,
@@ -445,12 +390,7 @@ void main() {
         task
     );
 
-#ifdef WR_FEATURE_GLYPH_TRANSFORM
-    vec2 f = (glyph_transform * vi.local_pos - glyph_rect.p0) / glyph_rect.size;
-    v_uv_clip = vec4(f, 1.0 - f);
-#else
     vec2 f = (vi.local_pos - glyph_rect.p0) / glyph_rect.size;
-#endif
 
     write_clip(vi.world_pos, clip_area, task);
 
@@ -485,25 +425,11 @@ void main() {
     vec2 st1 = res.uv_rect.zw / texture_size;
 
     v_uv = mix(st0, st1, f);
-    v_uv_bounds = (res.uv_rect + vec4(0.5, 0.5, -0.5, -0.5)) / texture_size.xyxy;
 }
 
 #endif // WR_VERTEX_SHADER
 
 #ifdef WR_FRAGMENT_SHADER
-
-Fragment text_fs(void) {
-    Fragment frag;
-
-    vec2 tc = clamp(v_uv, v_uv_bounds.xy, v_uv_bounds.zw);
-    vec4 mask = texture(sColor0, tc);
-    mask.rgb = mask.rgb * v_mask_swizzle.x + mask.aaa * v_mask_swizzle.y;
-
-    frag.color = v_color;// * mask;
-
-    return frag;
-}
-
 
 void main() {
 
