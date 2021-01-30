@@ -49,9 +49,8 @@ void main ()
   tmpvar_33 = texelFetchOffset (sGpuCache, ivec2(0, 0), 0, ivec2(1, 0));
   
 
-  vec2 tmpvar_45 = (vec2(60, 80) + (vec2(80, 100) * aPosition));
+  gl_Position = uTransform * vec4((vec2(60, 80) + (vec2(80, 100) * aPosition)), 0, 1);
   
-  gl_Position = (uTransform * vec4(tmpvar_45, 0, 1));
 
   //
   //
